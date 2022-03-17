@@ -1,0 +1,34 @@
+#!/bin/bash
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+if [[ "$#" -ne 3 ]]
+then
+	echo ""
+	echo -e " ${RED}[Error]${NC} :  Command has wrong arguments."
+	echo ""
+	echo "Usage"
+	echo "*****"
+	echo -e " $ ${GREEN} make_service [option] ARG1 ARG2 ${NC}"
+	echo ""
+	echo "    option = [install/uninstall]"
+	echo "    ARG1   = ROS package name"
+	echo "    ARG2   = launch file name"
+	echo ""
+
+else
+	if [[ $1 == 'install' ]]
+	then
+		echo "Installing $2$3service .."
+		touch $2$3service
+	fi
+	if [[ $1 == 'uninstall' ]]
+	then
+		echo "Removing $2$3service .."
+		rm $2$3service
+	fi
+fi
+
+
