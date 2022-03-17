@@ -1,0 +1,73 @@
+#!/bin/bash
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+if [[ "$#" -ne 3 ]]
+then
+	echo ""
+	echo -e " ${RED}[Error]${NC} :  Command has wrong arguments."
+	echo ""
+	echo "Usage"
+	echo "*****"
+	echo -e " $ ${GREEN} make_service [option] ARG1 ARG2 ${NC}"
+	echo ""
+	echo "    option = [install/uninstall]"
+	echo "    ARG1   = ROS package name"
+	echo "    ARG2   = launch file name"
+	echo ""
+
+else
+	if [[ $1 == 'install' ]]
+	then
+		echo "Installing $2$3service .."
+
+		touch /etc/init.d/$2$3service
+		chmod +x /etc/init.d/$2$3service
+
+		echo "#!/bin/sh" > /etc/init.d/$2$3service
+		echo 'PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"' >> /etc/init.d/$2$3service
+		echo "source ~/.bashrc" >> /etc/init.d/$2$3service
+		echo " " >> /etc/init.d/$2$3service
+		echo 'case "$1" in' >> /etc/init.d/$2$3service
+
+		echo "start)" >> /etc/init.d/$2$3service
+		echo "	echo 'roslaunch $2 $3.launch'" >> /etc/init.d/$2$3service
+		echo "	roslaunch $2 $3.launch" >> /etc/init.d/$2$3service
+		echo ";;" >> /etc/init.d/$2$3service
+
+		echo "stop)" >> /etc/init.d/$2$3service
+		echo '	echo "rosnode killing"' >> /etc/init.d/$2$3service
+		echo "	for i in(rosnode list);" >> /etc/init.d/$2$3service
+		echo "	do" >> /etc/init.d/$2$3service
+		echo "		rosnode kill \$i" >> /etc/init.d/$2$3service
+		echo '		echo "killing $i" ' >> /etc/init.d/$2$3service
+		echo "	done" >> /etc/init.d/$2$3service
+		echo "	killall roscore" >> /etc/init.d/$2$3service
+		echo '	echo " "' >> /etc/init.d/$2$3service
+		echo '	echo " Killing all roscore."' >> /etc/init.d/$2$3service
+		echo ";;" >> /etc/init.d/$2$3service
+
+		echo "enable)" >> /etc/init.d/$2$3service
+		echo '	echo "Service Enabled"' >> /etc/init.d/$2$3service
+		echo "	update-rc.d $2$3service defaults 99" >> /etc/init.d/$2$3service
+		echo ";;" >> /etc/init.d/$2$3service
+
+		echo "disable)" >> /etc/init.d/$2$3service
+		echo '	echo "Service Disable"' >> /etc/init.d/$2$3service
+		echo "	rm -f /etc/rc*/*$2$3*" >> /etc/init.d/$2$3service
+		echo ";;" >> /etc/init.d/$2$3service
+		echo "esac" >> /etc/init.d/$2$3service
+		echo " " >> /etc/init.d/$2$3service
+		
+	fi
+	if [[ $1 == 'uninstall' ]]
+	then
+		echo "Removing $2$3service .."
+		rm /etc/init.d/$2$3service
+		rm /etc/init.d/rc*/*$2$3*
+	fi
+fi
+
+
