@@ -1,0 +1,8 @@
+call plug#begin('~/.vim/plugged')
+
+" Fugitive Vim Github Wrapper
+
+Plug 'tpope/vim-fugitive'
+Plug 'itchyny/lightline.vim'
+
+call plug#end()
