@@ -18,8 +18,8 @@ echo " Check this url => "
 echo " https://github.com/junegunn/vim-plug"
 
 # sublime style
-mkdir ~/vim/colors
-cp sublimemonokai.vim ~/vim/colors/
+mkdir ~/.vim/colors
+cp sublimemonokai.vim ~/.vim/colors/
 
 
 
